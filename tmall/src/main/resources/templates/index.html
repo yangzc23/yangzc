@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>欢迎来到天猫商城</title>
+<link rel="shortcut icon" th:href="@{/favicon.ico}">
+<link rel="bookmark" th:href="@{/favicon.ico}" type="image/x-icon" />
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+<link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap-table.css}">
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/bootstrap-table.js"></script>
+<script src="js/bootstrap-table-zh-CN.js"></script>
+<script src="js/tmall.js"></script>
+<script type="text/javascript">	
+	$(function(){
+		//console.log('test....');
+		initMainTable();
+		$('#usrname').text(sessionStorage.getItem('user'));
+		$('#points').text(sessionStorage.getItem('credit'));
+		var str = sessionStorage.getItem('cart');
+		var cart;
+		if(str!=null){
+			cart = JSON.parse(str);
+			$("#quantity").text(cart.length);
+			if(cart.length>0){
+				$("#quantity").addClass("badge");
+				$("#quantity").css("background-color","red");
+			}
+		}
+	});
+	
+
+</script>
+</head>
+<body>
+<ul class="nav nav-pills">
+  <li role="presentation" class="active" ><a href="#">首页</a></li>
+  <li role="presentation"><a href="orderDetail">我的淘宝</a></li>
+  <li role="presentation"><a href="cart">购物车 <span id="quantity">0</span>件</a></li>
+  <li role="presentation"><a href="#">您好，<span id="usrname"></span></a></li>
+  <li role="presentation"><a href="#">积分<span id="points"></span></a></li>
+  <li role="presentation"><a href="javascript:;" onclick="logout();">退出</a></li>
+</ul>
+<div>
+<table id="grid" class="table"></table>
+</div>
+</body>
+</html>

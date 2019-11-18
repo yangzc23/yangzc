@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2019-9-27 10:33:55 by Hibernate Tools 4.3.5.Final -->
+<hibernate-mapping>
+    <class name="com.cskfz.tmall.entity.TProduct" table="t_product" catalog="tmall" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="50" />
+        </property>
+        <property name="price" type="java.lang.Float">
+            <column name="price" precision="10" />
+        </property>
+        <property name="exchangeCredit" type="java.lang.Integer">
+            <column name="exchange_credit" />
+        </property>
+        <property name="exchangeCountLimit" type="java.lang.Integer">
+            <column name="exchange_count_limit" />
+        </property>
+        <property name="stock" type="java.lang.Integer">
+            <column name="stock" />
+        </property>
+        <property name="exchangeFlag" type="java.lang.Boolean">
+            <column name="exchange_flag" />
+        </property>
+        <property name="imageUrl" type="java.lang.String">
+            <column name="img_url" />
+        </property>        
+        <property name="desc" type="java.lang.String">
+            <column name="description" />
+        </property>
+    </class>
+</hibernate-mapping>
