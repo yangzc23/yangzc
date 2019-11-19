@@ -1,5 +1,7 @@
 # yangzc
 
+## 天猫商城
+
 ### 商城首页
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191117230451468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
@@ -29,3 +31,23 @@
 [[11] idea上Springboot项目导入mybatis依赖显示unknown是怎么回事？](https://segmentfault.com/q/1010000013678360)
 
 [[12] springboot配置hibernate双向一对多时出现json死循环](https://www.imooc.com/qadetail/217251?t=353113)
+
+## 学生管理
+
+### 学生管理界面
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191119133554246.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191119134219778.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2019111913464880.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191119134724234.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
+
+### 参考资料
+
+[[01] SpringBoot 实现文件上传，图片上传并显示功能](https://blog.csdn.net/qq_38762237/article/details/81282444)
+
+[[02] springboot添加图片后访问404](https://blog.csdn.net/baikunlong/article/details/86251139)
+
+[[03] Spring Boot文件上传](https://blog.csdn.net/gnail_oug/article/details/80324120)
