@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理系统</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="bootstrap-table/css/bootstrap-table.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bootstrap-table/js/bootstrap-table.js"></script>
+    <script src="bootstrap-table/js/bootstrap-table-zh-CN.js"></script>
+    <script src="js/student.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.form_date').datetimepicker({
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0,
+            });
+
+            initMainTable();
+        })
+    </script>
+</head>
+<body class="bg-info">
+<!--导航层-->
+<div>
+    <!--菜单列表-->
+    <ul class="nav nav-pills nav-justified">
+        <li role="presentation" class="active"><a href="javascript:void(0);">学生基本信息管理</a></li>
+        <li role="presentation"><a href="javascript:void(0);">学生档案</a></li>
+        <li role="presentation"><a href="javascript:void(0);">学生就业情况</a></li>
+    </ul>
+</div>
+<div>
+    <table id="grid" class="table" data-toolbar=".toolbar"></table>
+</div>
+<div id="toolbar" class="toolbar">
+    <button type="button" class="btn btn-primary" onclick="add();">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
+    </button>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="subject"></h3>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="register">
+                    <div class="form-group" id="first">
+                        <label for="sid">学号</label>
+                        <input type="text" class="form-control" id="sid" name="sid" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="sname">姓名</label>
+                        <input type="text" class="form-control" id="sname" name="sname" placeholder="请输入姓名">
+                    </div>
+                    <label>性別</label>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" id="male" value="1" checked> 靓仔
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" id="female" value="0"> 美女
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="birth">生日</label>
+                        <div class="input-group date form_date" data-date="" data-date-format="yyyy MM dd" data-link-field="birth" data-link-format="yyyy-mm-dd">
+                            <input name="birth" id="birth" class="form-control" type="text" value="" readonly>
+                            <span class="input-group-addon">
+							<span class="glyphicon glyphicon-remove"></span>
+						</span>
+                            <span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">上传头像</label>
+                        <input type="file" id="photo" name="photo">
+                        <p class="help-block">请上传jpg或者png格式的文件！</p>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" onclick="upload();">
+                            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> 上传
+                        </button>
+                    </div>
+                    <div hidden="hidden">
+                        <input type="text" name="filePath" id="filePath" value="images/default.png"/>
+                    </div>
+                    <div class="form-group">
+                        <img width="120" height="120" src="images/default.png" id="photo2"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+</html>

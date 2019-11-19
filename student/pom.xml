@@ -8,10 +8,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>com.cskfz</groupId>
-    <artifactId>tmall</artifactId>
+    <artifactId>student</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tmall</name>
+    <name>student</name>
     <description>Demo project for Spring Boot</description>
+
 
     <build>
         <plugins>
