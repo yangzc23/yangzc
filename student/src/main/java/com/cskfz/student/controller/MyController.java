@@ -2,7 +2,12 @@ package com.cskfz.student.controller;
 
 import com.cskfz.student.entity.Student;
 import com.cskfz.student.pojo.ActionResult;
+import com.cskfz.student.pojo.StudentVO;
 import com.cskfz.student.utils.DBUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +28,7 @@ import java.util.*;
  * @Date: Created on 11:39 2019/11/19
  * @Modified By:
  */
+@Api(value = "学生管理")
 @Controller
 @RequestMapping("/")
 public class MyController {
@@ -38,9 +44,10 @@ public class MyController {
      * @param map
      * @return
      */
-    @RequestMapping("/welcome")
+    @ApiOperation(value = "学生列表", notes = "根据指定的页码和行数返回学生列表")
+    @PostMapping("/welcome")
     @ResponseBody
-    public ActionResult getStudents(@RequestBody Map<String,String> map) {
+    public ActionResult getStudents(@RequestBody @ApiParam(value = "页码和行数", required = true) Map<String,String> map) {
         //PrintWriter pw = null;
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -85,7 +92,9 @@ public class MyController {
      * @param sid
      * @return
      */
-    @RequestMapping("/edit/{sid}")
+    @ApiOperation(value = "学生信息加载", notes = "根据学号获取该学生的信息")
+    @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path")
+    @GetMapping("/edit/{sid}")
     @ResponseBody
     public ActionResult loadStudent(@PathVariable int sid){
         Connection conn = null;
@@ -116,24 +125,26 @@ public class MyController {
 
     /**
      * 学生保存
-     * @param req
+     * @param stu
      * @return
      */
-    @RequestMapping("/save")
+    @ApiOperation(value = "学生信息保存", notes = "将输入的学生信息保存到数据库")
+    @ApiImplicitParam(value = "学生对象")
+    @PostMapping("/save")
     @ResponseBody
-    public ActionResult saveStudent(HttpServletRequest req){
+    public ActionResult saveStudent(StudentVO stu){
         Connection conn = null;
         PreparedStatement stmt = null;
         ActionResult result = null;
-        String sno = req.getParameter("sid");
+        String sno = stu.getSid();
         //
-        String sname = req.getParameter("sname");
+        String sname = stu.getSname();
         //
-        String gender = req.getParameter("gender").equals("0")?"女":"男";
+        String gender = stu.getGender().equals("0")?"女":"男";
         //
-        String birth = req.getParameter("birth");
+        String birth = stu.getBirth();
         //
-        String filePath = req.getParameter("filePath");
+        String filePath = stu.getFilePath();
         //
         try {
             conn = dbUtil.getConnection();
@@ -173,7 +184,9 @@ public class MyController {
      * @param sid
      * @return
      */
-    @RequestMapping("/delete/{sid}")
+    @ApiOperation(value = "删除学生信息", notes = "根据学号删除该学生的信息")
+    @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path")
+    @DeleteMapping("/delete/{sid}")
     @ResponseBody
     public ActionResult delStudent(@PathVariable int sid){
         Connection conn = null;
@@ -206,7 +219,9 @@ public class MyController {
      * @param req
      * @return
      */
-    @RequestMapping("/upload/file")
+    @ApiOperation(value = "头像上传", notes = "文件上传")
+    @ApiImplicitParam(name = "source", value = "图片", dataType = "__file", required = true, paramType = "form")
+    @PostMapping("/upload/file")
     @ResponseBody
     public ActionResult uploadFile(@RequestParam("source") MultipartFile file, HttpServletRequest req) {
         ActionResult result = null;

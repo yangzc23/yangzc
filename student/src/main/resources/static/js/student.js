@@ -213,7 +213,7 @@ function del(sid){
     if(yesOrNo){
         $.ajax({
             //几个参数需要注意一下
-            type: "GET",//方法类型
+            type: "DELETE",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: "delete/"+sid ,//url
             success: function (data) {
