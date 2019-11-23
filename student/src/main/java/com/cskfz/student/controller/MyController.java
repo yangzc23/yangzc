@@ -4,10 +4,7 @@ import com.cskfz.student.entity.Student;
 import com.cskfz.student.pojo.ActionResult;
 import com.cskfz.student.pojo.StudentVO;
 import com.cskfz.student.utils.DBUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -41,13 +38,21 @@ public class MyController {
 
     /**
      * 学生列表
-     * @param map
+     * @param params
      * @return
      */
     @ApiOperation(value = "学生列表", notes = "根据指定的页码和行数返回学生列表")
+    @ApiImplicitParam(name = "params", paramType = "body", examples =
+    @Example(value = {
+            @ExampleProperty(mediaType = "application/json",value = "{\n" +
+                    "\"page\": \"1\",\n" +
+                    "\"rows\": \"5\"\n" +
+                    "}")
+    })
+    )
     @PostMapping("/welcome")
     @ResponseBody
-    public ActionResult getStudents(@RequestBody @ApiParam(value = "页码和行数", required = true) Map<String,String> map) {
+    public ActionResult getStudents(@RequestBody Map<String,String> params) {
         //PrintWriter pw = null;
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -55,8 +60,8 @@ public class MyController {
         Map<String,Object> data = new HashMap<String,Object>();
         List<Student> list = new ArrayList<Student>();
         ActionResult result = null;
-        int rows = Integer.parseInt(map.get("rows"));
-        int page = Integer.parseInt(map.get("page"));
+        int rows = Integer.parseInt(params.get("rows"));
+        int page = Integer.parseInt(params.get("page"));
         int begin = (page-1)*rows;
         try {
             conn = dbUtil.getConnection();
@@ -96,7 +101,7 @@ public class MyController {
     @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path")
     @GetMapping("/edit/{sid}")
     @ResponseBody
-    public ActionResult loadStudent(@PathVariable int sid){
+    public ActionResult loadStudent(@PathVariable Integer sid){
         Connection conn = null;
         PreparedStatement stmt = null;
         ActionResult result = null;
@@ -129,7 +134,7 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "学生信息保存", notes = "将输入的学生信息保存到数据库")
-    @ApiImplicitParam(value = "学生对象")
+    @ApiImplicitParam(name = "Student", value = "学生对象")
     @PostMapping("/save")
     @ResponseBody
     public ActionResult saveStudent(StudentVO stu){
@@ -188,7 +193,7 @@ public class MyController {
     @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path")
     @DeleteMapping("/delete/{sid}")
     @ResponseBody
-    public ActionResult delStudent(@PathVariable int sid){
+    public ActionResult delStudent(@PathVariable Integer sid){
         Connection conn = null;
         PreparedStatement stmt = null;
         ActionResult result = null;
