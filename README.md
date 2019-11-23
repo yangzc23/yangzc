@@ -51,3 +51,54 @@
 [[02] springboot添加图片后访问404](https://blog.csdn.net/baikunlong/article/details/86251139)
 
 [[03] Spring Boot文件上传](https://blog.csdn.net/gnail_oug/article/details/80324120)
+
+## 使用swagger框架自动生成API接口文档
+
+### 访问学生管理的接口文档
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191123213911748.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
+
+### 使用swagger调用学生管理接口
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191123214359356.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MjUxODk3,size_16,color_FFFFFF,t_70)
+
+### 参考资料
+
+[[01] 关于通过Swagger查看接口浏览器跳出Unable to infer base url. This is common when using dynamic servlet registrat...](https://www.jianshu.com/p/0c92ec5bb257)
+
+[[02] How can I set a description and an example in Swagger with Swagger annotations?](http://www.hackerav.com/?post=18405)
+
+[[03] SpringBoot + Swagger + ReDoc 笔记](https://segmentfault.com/a/1190000018863282)
+
+[[04] 如何手动描述java@RequestBodyMap<String，String>的示例输入？](https://cloud.tencent.com/developer/ask/193286/answer/301631)
+
+[[05] SpringMVC-如何接收各种参数（普通参数，对象，JSON, URL）](https://www.cnblogs.com/jpfss/p/9336768.html)
+
+[[06] swagger常用注解说明](https://www.cnblogs.com/hyl8218/p/8520994.html)
+
+[[07] swagger ui swagger2 文件上传参数 input file](https://blog.csdn.net/zl20110000/article/details/93204756)
+
+[[08] AJAX发送GET、POST、DELETE、PUT请求到服务器](https://blog.csdn.net/cccmercy/article/details/79576709)
+
+[[09] springboot2.x集成swagger](https://www.ucloud.cn/yun/74623.html)
+
+[[10] @ApiImplicitParams dataType file __ file swagger升级的一些坑](https://my.oschina.net/valsong/blog/2252906)
+
+[[11] springfox + swagger2自定义JsonObject/Map参数文档](https://www.jianshu.com/p/fe58f7457e38)
+
+[[12] Swagger2 关于Map参数在API文档中展示详细参数以及参数说明](https://blog.csdn.net/hellopeng1/article/details/82227942)
+
+[[13] swagger生成接口文档和map类型参数解析](https://www.cnblogs.com/zhumiao/p/9684879.html)
+
+[[14] Swagger2.9.2的NumberFormatException](https://www.jianshu.com/p/4c0f886f4468)
+
+[[15] swagger2 Illegal DefaultValue for parameter type integer](https://blog.csdn.net/boyin333/article/details/87980108)
+
+**微信扫一扫关注公众号**
+
+![image.png](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMDAyNzkwMC0yMzM2ODlhNjQ1YTM2YTEyLnBuZw?x-oss-process=image/format,png#pic_center)
+
+**点击链接加入群聊**
+
+[https://jq.qq.com/?_wv=1027&k=5eVEhfN](https://jq.qq.com/?_wv=1027&k=5eVEhfN)
+软件测试学习交流QQ群号：**511619105**
