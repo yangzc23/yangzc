@@ -1,5 +1,7 @@
 package com.cskfz.student.pojo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /**
@@ -9,10 +11,19 @@ import java.io.Serializable;
  * @Modified By:
  */
 public class StudentVO implements Serializable {
+    @ApiModelProperty(value = "学号", name = "sid", example = "1001")
     private String sid;
+
+    @ApiModelProperty(value = "姓名", name = "sname", required = true, example = "王鸥")
     private String sname;
+
+    @ApiModelProperty(value = "性别", name = "gender", required = true, example = "0")
     private String gender;
+
+    @ApiModelProperty(value = "生日", name = "birth", required = true, example = "1999-01-01")
     private String birth;
+
+    @ApiModelProperty(value = "图片访问路径", name = "filePath", required = true, example = "upload/123.jpg")
     private String filePath;
 
     public StudentVO() {

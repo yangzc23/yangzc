@@ -1,5 +1,7 @@
 package com.cskfz.student.controller;
 
+import com.cskfz.student.controller.agent.annotation.ApiJsonObject;
+import com.cskfz.student.controller.agent.annotation.ApiJsonProperty;
 import com.cskfz.student.entity.Student;
 import com.cskfz.student.pojo.ActionResult;
 import com.cskfz.student.pojo.StudentVO;
@@ -42,17 +44,12 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "学生列表", notes = "根据指定的页码和行数返回学生列表")
-    @ApiImplicitParam(name = "params", paramType = "body", examples =
-    @Example(value = {
-            @ExampleProperty(mediaType = "application/json",value = "{\n" +
-                    "\"page\": \"1\",\n" +
-                    "\"rows\": \"5\"\n" +
-                    "}")
-    })
-    )
     @PostMapping("/welcome")
     @ResponseBody
-    public ActionResult getStudents(@RequestBody Map<String,String> params) {
+    public ActionResult getStudents(@ApiJsonObject(name = "params", value = {
+            @ApiJsonProperty(key = "page", example = "1", description = "页码"),
+            @ApiJsonProperty(key = "rows", example = "5", description = "行数")
+    }) @RequestBody Map<String,String> params) {
         //PrintWriter pw = null;
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -98,7 +95,7 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "学生信息加载", notes = "根据学号获取该学生的信息")
-    @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path")
+    @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path", example = "1001")
     @GetMapping("/edit/{sid}")
     @ResponseBody
     public ActionResult loadStudent(@PathVariable Integer sid){
@@ -134,7 +131,6 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "学生信息保存", notes = "将输入的学生信息保存到数据库")
-    @ApiImplicitParam(name = "Student", value = "学生对象")
     @PostMapping("/save")
     @ResponseBody
     public ActionResult saveStudent(StudentVO stu){
@@ -190,7 +186,7 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "删除学生信息", notes = "根据学号删除该学生的信息")
-    @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path")
+    @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path", example = "1001")
     @DeleteMapping("/delete/{sid}")
     @ResponseBody
     public ActionResult delStudent(@PathVariable Integer sid){
