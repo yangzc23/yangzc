@@ -9,6 +9,7 @@ import com.cskfz.student.utils.DBUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +28,7 @@ import java.util.*;
  * @Date: Created on 11:39 2019/11/19
  * @Modified By:
  */
-@Api(value = "学生管理")
+@Api(value = "/", tags = {"学生管理接口"}, description = "主要功能：学生信息的增删改查")
 @Controller
 @RequestMapping("/")
 public class MyController {
@@ -44,7 +45,7 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "学生列表", notes = "根据指定的页码和行数返回学生列表")
-    @PostMapping("/welcome")
+    @PostMapping(value = "/welcome", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ActionResult getStudents(@ApiJsonObject(name = "params", value = {
             @ApiJsonProperty(key = "page", example = "1", description = "页码"),
@@ -96,7 +97,7 @@ public class MyController {
      */
     @ApiOperation(value = "学生信息加载", notes = "根据学号获取该学生的信息")
     @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path", example = "1001")
-    @GetMapping("/edit/{sid}")
+    @GetMapping(value = "/edit/{sid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ActionResult loadStudent(@PathVariable Integer sid){
         Connection conn = null;
@@ -131,7 +132,7 @@ public class MyController {
      * @return
      */
     @ApiOperation(value = "学生信息保存", notes = "将输入的学生信息保存到数据库")
-    @PostMapping("/save")
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ActionResult saveStudent(StudentVO stu){
         Connection conn = null;
@@ -187,7 +188,7 @@ public class MyController {
      */
     @ApiOperation(value = "删除学生信息", notes = "根据学号删除该学生的信息")
     @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path", example = "1001")
-    @DeleteMapping("/delete/{sid}")
+    @DeleteMapping(value = "/delete/{sid}",  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ActionResult delStudent(@PathVariable Integer sid){
         Connection conn = null;
@@ -222,7 +223,7 @@ public class MyController {
      */
     @ApiOperation(value = "头像上传", notes = "文件上传")
     @ApiImplicitParam(name = "source", value = "图片", dataType = "__file", required = true, paramType = "form")
-    @PostMapping("/upload/file")
+    @PostMapping(value = "/upload/file", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ActionResult uploadFile(@RequestParam("source") MultipartFile file, HttpServletRequest req) {
         ActionResult result = null;

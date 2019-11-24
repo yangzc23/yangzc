@@ -14,12 +14,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyWebAppConfigurer implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/**").addResourceLocations("file:D:/upload/");
-        //html文件
         registry.addResourceHandler("swagger-ui.html").
-                addResourceLocations("classpath:/META-INF/resources/");
-        //js和css文件
+                addResourceLocations("classpath:/META-INF/resources/");//swagger的html文件
         registry.addResourceHandler("/webjars/**").
-                addResourceLocations("classpath:/META-INF/resources/webjars/");
+                addResourceLocations("classpath:/META-INF/resources/webjars/");//swagger的js和css文件
     }
 }
 
