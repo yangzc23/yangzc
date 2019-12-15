@@ -6,16 +6,25 @@ import com.cskfz.student.entity.Student;
 import com.cskfz.student.pojo.ActionResult;
 import com.cskfz.student.pojo.StudentVO;
 import com.cskfz.student.utils.DBUtil;
+import com.cskfz.student.utils.DownloadUtil;
 import io.swagger.annotations.*;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +47,10 @@ public class MyController {
 
     @Value("${upload.file.path}")
     private String savePath;
+
+    @Autowired
+    private ServletContext servletContext;
+
 
     /**
      * 学生列表
@@ -242,6 +255,104 @@ public class MyController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @GetMapping(value = "/export")
+    public void export(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        //1.创建工作簿
+        //String path = servletContext.getRealPath("/");
+        //path = path+"/make/students.xls";   //得到模板文件所在位置
+
+        File file = ResourceUtils.getFile("classpath:make/students.xls");
+
+        InputStream is = new FileInputStream(file);     //根据文件，得到指定的文件流
+
+        //根据文件流，加载指定的工作簿
+        //它只能操作excel2003版本
+        Workbook wb = new HSSFWorkbook(is);
+
+        //2.读取工作表
+        Sheet sheet = wb.getSheetAt(0);   //0代表工作表的下标
+
+        //抽取出一些公用变量
+        Row nRow=null;
+        Cell nCell = null;
+
+        int rowNo=1;//行号
+        int cellNo=0;//列号
+
+        //===========================================数据内容
+        nRow = sheet.getRow(rowNo);//读取第2行
+
+        //
+        CellStyle snoCellStyle = nRow.getCell(cellNo++).getCellStyle();//读取单元格的样式
+        String str = nRow.getCell(cellNo).getStringCellValue();//读取单元格的内容
+        System.out.println(str);
+
+        CellStyle snameCellStyle = nRow.getCell(cellNo++).getCellStyle();//读取单元格的样式
+        CellStyle isMaleCellStyle = nRow.getCell(cellNo++).getCellStyle();//读取单元格的样式
+        CellStyle birthCellStyle = nRow.getCell(cellNo++).getCellStyle();//读取单元格的样式
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        List<Student> list = new ArrayList<Student>();
+        try {
+            conn = dbUtil.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM STUDENT ORDER BY SNO");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                list.add(new Student(rs.getInt(1),rs.getString(2),rs.getString(3).equals("男"),rs.getDate(4),rs.getString(5)));
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        //遍历学生列表
+        for(Student stu :list){
+            //产生一个新行
+            nRow = sheet.createRow(rowNo++);
+            //nRow.setHeightInPoints(24f);//设置行高
+
+            cellNo=0;
+
+            nCell = nRow.createCell(cellNo++);//创建单元格
+            nCell.setCellValue(stu.getSno());//设置单元格内容
+            nCell.setCellStyle(snoCellStyle);    //设置单元格样式
+
+            nCell = nRow.createCell(cellNo++);//创建单元格
+            nCell.setCellValue(stu.getSname());//设置单元格内容
+            nCell.setCellStyle(snameCellStyle);    //设置单元格样式
+
+            nCell = nRow.createCell(cellNo++);//创建单元格
+            nCell.setCellValue(stu.isMale());//设置单元格内容
+            nCell.setCellStyle(isMaleCellStyle);    //设置单元格样式
+
+            nCell = nRow.createCell(cellNo++);//创建单元格
+            nCell.setCellValue(stu.getBirth());//设置单元格内容
+            nCell.setCellStyle(birthCellStyle);    //设置单元格样式
+
+        }
+
+        //输出
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();//内存的缓冲区
+        wb.write(byteArrayOutputStream);
+
+        DownloadUtil downloadUtil = new DownloadUtil();
+        Calendar cal = Calendar.getInstance();
+        //response.setHeader("Transfer-Encoding", "chunked");
+        String returnName = "students" + cal.get(Calendar.YEAR) +
+                (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DAY_OF_MONTH) +
+                cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) +
+                cal.get(Calendar.SECOND) + ".xls";
+        downloadUtil.download(byteArrayOutputStream, response, returnName);
     }
 
 }

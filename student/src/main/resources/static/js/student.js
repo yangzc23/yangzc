@@ -228,3 +228,7 @@ function del(sid){
         });
     }
 }
+
+function exportData(){
+    window.open("export" ,"_blank");
+}
