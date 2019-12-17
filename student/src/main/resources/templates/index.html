@@ -6,12 +6,16 @@
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
     <link rel="stylesheet" href="bootstrap-table/css/bootstrap-table.css">
+    <link rel="stylesheet" href="bootstrap-fileinput/css/fileinput.css">
+    <link rel="stylesheet" href="bootstrap-fileinput/css/fileinput-rtl.css">
     <script src="js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
     <script src="bootstrap-table/js/bootstrap-table.js"></script>
     <script src="bootstrap-table/js/bootstrap-table-zh-CN.js"></script>
+    <script src="bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="bootstrap-fileinput/js/zh.js"></script>
     <script src="js/student.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -28,6 +32,17 @@
 
             initMainTable();
         })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#input-b9").fileinput({
+                showPreview: false,
+                showUpload: true,
+                elErrorContainer: '#kartik-file-errors',
+                allowedFileExtensions: ["xls","xlsx"],
+                uploadUrl: 'import'
+            });
+        });
     </script>
 </head>
 <body class="bg-info">
@@ -47,10 +62,40 @@
     <button type="button" class="btn btn-primary" onclick="add();">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
     </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <span class="glyphicon glyphicon-import" aria-hidden="true"></span> 导入
+    </button>
     <button type="button" class="btn btn-primary" onclick="exportData();">
         <span class="glyphicon glyphicon-export" aria-hidden="true"></span> 导出
     </button>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="file-loading">
+                    <input id="input-b9" name="file" multiple type="file">
+                </div>
+                <div id="kartik-file-errors"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" title="Your custom upload logic">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

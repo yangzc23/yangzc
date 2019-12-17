@@ -8,7 +8,7 @@ import com.cskfz.student.pojo.StudentVO;
 import com.cskfz.student.utils.DBUtil;
 import com.cskfz.student.utils.DownloadUtil;
 import io.swagger.annotations.*;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +29,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -353,6 +355,93 @@ public class MyController {
                 cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) +
                 cal.get(Calendar.SECOND) + ".xls";
         downloadUtil.download(byteArrayOutputStream, response, returnName);
+    }
+
+
+    @PostMapping("import")
+    @ResponseBody
+    public ActionResult upload(@PathVariable("file") MultipartFile file) throws Exception {
+            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(file.getInputStream());
+            List<StudentVO> getData = readOldExcel(hssfWorkbook);
+            if (getData == null) {
+                return new ActionResult(-1,"解析文件失败",null);
+            }
+            file.getInputStream().close();
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        //
+        try {
+            conn = dbUtil.getConnection();
+            for(StudentVO stu:getData){
+                stmt = conn.prepareStatement("INSERT INTO STUDENT(SNAME,GENDER,BIRTH) VALUES(?,?,?)");
+                stmt.setString(1, stu.getSname());
+                stmt.setString(2, stu.getGender());
+                stmt.setString(3, stu.getBirth());
+                stmt.executeUpdate();
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();//关闭数据库的连接
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return ActionResult.ok(getData);
+    }
+
+    //处理2007之前的excel
+    private List<StudentVO> readOldExcel(HSSFWorkbook hssfWorkbook) {
+        List<StudentVO> students = new ArrayList<StudentVO>();
+        HSSFSheet sheetAt = hssfWorkbook.getSheetAt(0);
+        HSSFCell cell = null;
+        HSSFRow row = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (int i = sheetAt.getFirstRowNum()+1; i < sheetAt.getPhysicalNumberOfRows(); i++) {
+            row = sheetAt.getRow(i);
+            if (row == null) {
+                continue;
+            }
+            Object[] objects = new Object[row.getLastCellNum()];
+            for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
+                cell = row.getCell(j);
+                switch (cell.getCellTypeEnum()) {
+                    case STRING:
+                        objects[j] = cell.getStringCellValue();
+                        System.out.println(cell.getStringCellValue());
+                        break;
+                    case _NONE:
+                        objects[j] = "";
+                        break;
+                    case BOOLEAN:
+                        objects[j] = cell.getBooleanCellValue();
+                        System.out.println(cell.getBooleanCellValue());
+                        break;
+                    case NUMERIC:
+                        //处理double类型的  1.0===》1
+                        DecimalFormat df = new DecimalFormat("0");
+                        String s = df.format(cell.getNumericCellValue());
+                        objects[j] = s;
+                        System.out.println(s);
+                        break;
+                    default:
+                        objects[j] = cell.toString();
+                }
+            }
+            //处理数据
+            if (objects != null) {
+                StudentVO stu = new StudentVO();
+                stu.setSname((String) objects[1]);
+                stu.setGender((String)objects[2]);
+                stu.setBirth(sdf.format(row.getCell(3).getDateCellValue()));
+                students.add(stu);
+            }
+        }
+        return students;
     }
 
 }
