@@ -230,5 +230,35 @@ function del(sid){
 }
 
 function exportData(){
-    window.open("export" ,"_blank");
+    //window.open("export" ,"_blank");
+    var xhr ;
+    if(window.XMLHttpRequest){//code for IE7+,Firefox,Chrome,Opera,Safari
+        xhr = new XMLHttpRequest();
+    }else{//code for IE6,IE5
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    var url = 'export';
+    //设置响应类型为blob类型
+    xhr.responseType = "blob";
+    xhr.open("post", url, true);
+    xhr.onload = function () {
+        if (this.status == "200") {
+            //获取响应文件流　　
+            var blob = this.response;
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);    // 转换为base64，可以直接放入a表情href
+            reader.onload = function (e) {
+                // 转换完成，创建一个a标签用于下载
+                var a = document.createElement('a');
+                a.download = '学生列表.xls';
+                a.href = e.target.result;
+                $("body").append(a);    // 修复firefox中无法触发click
+                a.click();
+                $(a).remove();
+            }
+        }
+    }
+
+    xhr.send();
+
 }

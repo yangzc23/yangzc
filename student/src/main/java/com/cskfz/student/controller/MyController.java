@@ -16,15 +16,15 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import javax.swing.*;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,7 +52,6 @@ public class MyController {
 
     @Autowired
     private ServletContext servletContext;
-
 
     /**
      * 学生列表
@@ -259,19 +258,44 @@ public class MyController {
         return result;
     }
 
-    @GetMapping(value = "/export")
-    public void export(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    /**
+     * 导出学生列表
+     * @return
+     */
+    @PostMapping(value = "/export")
+    @ResponseBody
+    public ActionResult export(){
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = requestAttributes.getResponse();
         //1.创建工作簿
         //String path = servletContext.getRealPath("/");
         //path = path+"/make/students.xls";   //得到模板文件所在位置
 
-        File file = ResourceUtils.getFile("classpath:make/students.xls");
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:make/students.xls");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new ActionResult(-1,"出现异常",null);
+        }
 
-        InputStream is = new FileInputStream(file);     //根据文件，得到指定的文件流
+        InputStream is = null;     //根据文件，得到指定的文件流
+        try {
+            is = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return new ActionResult(-1,"出现异常",null);
+        }
 
         //根据文件流，加载指定的工作簿
         //它只能操作excel2003版本
-        Workbook wb = new HSSFWorkbook(is);
+        Workbook wb = null;
+        try {
+            wb = new HSSFWorkbook(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ActionResult(-1,"出现异常",null);
+        }
 
         //2.读取工作表
         Sheet sheet = wb.getSheetAt(0);   //0代表工作表的下标
@@ -308,6 +332,7 @@ public class MyController {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return new ActionResult(-1,"出现异常",null);
         } finally {
             try {
                 conn.close();
@@ -345,7 +370,11 @@ public class MyController {
 
         //输出
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();//内存的缓冲区
-        wb.write(byteArrayOutputStream);
+        try {
+            wb.write(byteArrayOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         DownloadUtil downloadUtil = new DownloadUtil();
         Calendar cal = Calendar.getInstance();
@@ -354,10 +383,22 @@ public class MyController {
                 (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DAY_OF_MONTH) +
                 cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) +
                 cal.get(Calendar.SECOND) + ".xls";
-        downloadUtil.download(byteArrayOutputStream, response, returnName);
+        try {
+            downloadUtil.download(byteArrayOutputStream, response, returnName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ActionResult(-1,"出现异常",null);
+        }
+        return null;
     }
 
 
+    /**
+     * 导入学生列表
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @PostMapping("import")
     @ResponseBody
     public ActionResult upload(@PathVariable("file") MultipartFile file) throws Exception {
