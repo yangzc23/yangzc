@@ -20,10 +20,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,9 +47,6 @@ public class MyController {
 
     @Value("${upload.file.path}")
     private String savePath;
-
-    @Autowired
-    private ServletContext servletContext;
 
     /**
      * 学生列表
