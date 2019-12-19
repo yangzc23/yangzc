@@ -373,11 +373,9 @@ public class MyController {
 
         DownloadUtil downloadUtil = new DownloadUtil();
         Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         //response.setHeader("Transfer-Encoding", "chunked");
-        String returnName = "students" + cal.get(Calendar.YEAR) +
-                (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DAY_OF_MONTH) +
-                cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) +
-                cal.get(Calendar.SECOND) + ".xls";
+        String returnName = "students" + sdf.format(cal.getTime()) + ".xls";
         try {
             downloadUtil.download(byteArrayOutputStream, response, returnName);
         } catch (IOException e) {
