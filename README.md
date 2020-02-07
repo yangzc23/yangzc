@@ -1,5 +1,7 @@
 # yangzc
 
+## 使用的技术：SpringBoot + Hibernate + BootStrap
+
 ## 天猫商城
 
 ### 商城首页
