@@ -10,7 +10,7 @@ import java.sql.SQLException;
 @Component
 public class DBUtil {
 
-	@Value("${spring.datasource.driverClassName}")
+	@Value("${spring.datasource.driver-class-name}")
 	private String driver;//数据库驱动名
 
 	@Value("${spring.datasource.url}")

@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
@@ -140,6 +141,7 @@ public class MyController {
      * @param stu
      * @return
      */
+    @PreAuthorize("hasAuthority('stu:save')")
     @ApiOperation(value = "学生信息保存", notes = "将输入的学生信息保存到数据库")
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -195,6 +197,7 @@ public class MyController {
      * @param sid
      * @return
      */
+    @PreAuthorize("hasAuthority('stu:delete')")
     @ApiOperation(value = "删除学生信息", notes = "根据学号删除该学生的信息")
     @ApiImplicitParam(name = "sid", value = "学号", dataType = "int", paramType = "path", example = "1001")
     @DeleteMapping(value = "/delete/{sid}",  produces = MediaType.APPLICATION_JSON_VALUE)

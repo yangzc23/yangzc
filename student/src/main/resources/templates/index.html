@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>学生管理系统</title>
@@ -48,14 +48,14 @@
 </head>
 <body class="bg-info">
 <!--导航层-->
-<div>
-    <!--菜单列表-->
+<!--<div>
     <ul class="nav nav-pills nav-justified">
         <li role="presentation" class="active"><a href="javascript:void(0);">学生基本信息管理</a></li>
         <li role="presentation"><a href="javascript:void(0);">学生档案</a></li>
         <li role="presentation"><a href="javascript:void(0);">学生就业情况</a></li>
     </ul>
-</div>
+</div>-->
+<h3>当前登录用户：<span th:text="${#authentication.name}"></span> | <a th:href="@{/logout}">退出</a></h3>
 <div>
     <table id="grid" class="table" data-toolbar=".toolbar"></table>
 </div>

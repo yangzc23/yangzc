@@ -1,0 +1,23 @@
+server:
+  port: 5050
+  servlet:
+    context-path: /student
+security:
+  oauth2:
+    client:
+      client-id: StudentSystem
+      client-secret: stu123
+      access-token-uri: http://localhost:8080/oauth/token
+      user-authorization-uri: http://localhost:8080/oauth/authorize
+    resource:
+      jwt:
+        key-uri: http://localhost:8080/oauth/token_key
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/stutest?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+upload:
+  file:
+    path: d:/upload

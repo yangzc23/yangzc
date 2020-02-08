@@ -38,9 +38,9 @@
   <li role="presentation" class="active" ><a href="#">首页</a></li>
   <li role="presentation"><a href="orderDetail">我的淘宝</a></li>
   <li role="presentation"><a href="cart">购物车 <span id="quantity">0</span>件</a></li>
-  <li role="presentation"><a href="#">您好，<span id="usrname"></span></a></li>
+  <li role="presentation"><a href="#">您好，<span th:text="${#authentication.name}"></span></a></li>
   <li role="presentation"><a href="#">积分<span id="points"></span></a></li>
-  <li role="presentation"><a href="javascript:;" onclick="logout();">退出</a></li>
+  <li role="presentation"><a th:href="@{/logout}">退出</a></li>
 </ul>
 <div>
 <table id="grid" class="table"></table>
