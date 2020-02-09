@@ -12,6 +12,7 @@ security:
     resource:
       jwt:
         key-uri: http://localhost:8080/oauth/token_key
+      user-info-uri: http://localhost:8080/user
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/stutest?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
